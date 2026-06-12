@@ -1,0 +1,183 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Student {
+    int id;
+    String name;
+    int marks;
+
+    Student(int id, String name, int marks) {
+        this.id = id;
+        this.name = name;
+        this.marks = marks;
+    }
+
+    String getGrade() {
+        if (marks >= 90)
+            return "A";
+        else if (marks >= 80)
+            return "B";
+        else if (marks >= 70)
+            return "C";
+        else if (marks >= 60)
+            return "D";
+        else
+            return "F";
+    }
+
+    void display() {
+        System.out.println("ID      : " + id);
+        System.out.println("Name    : " + name);
+        System.out.println("Marks   : " + marks);
+        System.out.println("Grade   : " + getGrade());
+        System.out.println("------------------------");
+    }
+}
+
+public class Main {
+
+    static ArrayList<Student> students = new ArrayList<>();
+    static Scanner sc = new Scanner(System.in);
+
+    static void addStudent() {
+        System.out.print("Enter Student ID: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter Student Name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Enter Marks: ");
+        int marks = sc.nextInt();
+
+        students.add(new Student(id, name, marks));
+        System.out.println("Student Added Successfully!");
+    }
+
+    static void viewStudents() {
+        if (students.isEmpty()) {
+            System.out.println("No Student Records Found!");
+            return;
+        }
+
+        for (Student s : students) {
+            s.display();
+        }
+    }
+
+    static void searchStudent() {
+        System.out.print("Enter Student ID: ");
+        int id = sc.nextInt();
+
+        for (Student s : students) {
+            if (s.id == id) {
+                s.display();
+                return;
+            }
+        }
+
+        System.out.println("Student Not Found!");
+    }
+
+    static void updateMarks() {
+        System.out.print("Enter Student ID: ");
+        int id = sc.nextInt();
+
+        for (Student s : students) {
+            if (s.id == id) {
+                System.out.print("Enter New Marks: ");
+                s.marks = sc.nextInt();
+                System.out.println("Marks Updated Successfully!");
+                return;
+            }
+        }
+
+        System.out.println("Student Not Found!");
+    }
+
+    static void deleteStudent() {
+        System.out.print("Enter Student ID: ");
+        int id = sc.nextInt();
+
+        for (int i = 0; i < students.size(); i++) {
+            if (students.get(i).id == id) {
+                students.remove(i);
+                System.out.println("Student Deleted Successfully!");
+                return;
+            }
+        }
+
+        System.out.println("Student Not Found!");
+    }
+
+    static void classReport() {
+        if (students.isEmpty()) {
+            System.out.println("No Data Available!");
+            return;
+        }
+
+        int total = 0;
+        int highest = students.get(0).marks;
+        String topper = students.get(0).name;
+
+        for (Student s : students) {
+            total += s.marks;
+
+            if (s.marks > highest) {
+                highest = s.marks;
+                topper = s.name;
+            }
+        }
+
+        double average = (double) total / students.size();
+
+        System.out.println("\n===== CLASS REPORT =====");
+        System.out.println("Total Students : " + students.size());
+        System.out.println("Average Marks  : " + average);
+        System.out.println("Topper         : " + topper);
+        System.out.println("Highest Marks  : " + highest);
+    }
+
+    public static void main(String[] args) {
+
+        while (true) {
+            System.out.println("\n===== Student Management System =====");
+            System.out.println("1. Add Student");
+            System.out.println("2. View Students");
+            System.out.println("3. Search Student");
+            System.out.println("4. Update Marks");
+            System.out.println("5. Delete Student");
+            System.out.println("6. Class Report");
+            System.out.println("7. Exit");
+
+            System.out.print("Enter Your Choice: ");
+            int choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    addStudent();
+                    break;
+                case 2:
+                    viewStudents();
+                    break;
+                case 3:
+                    searchStudent();
+                    break;
+                case 4:
+                    updateMarks();
+                    break;
+                case 5:
+                    deleteStudent();
+                    break;
+                case 6:
+                    classReport();
+                    break;
+                case 7:
+                    System.out.println("Thank You!");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid Choice!");
+            }
+        }
+    }
+}
