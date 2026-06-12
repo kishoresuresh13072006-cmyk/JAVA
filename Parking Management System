@@ -1,0 +1,139 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Vehicle {
+    String vehicleNumber;
+    String ownerName;
+    String vehicleType;
+
+    Vehicle(String vehicleNumber, String ownerName, String vehicleType) {
+        this.vehicleNumber = vehicleNumber;
+        this.ownerName = ownerName;
+        this.vehicleType = vehicleType;
+    }
+
+    void display() {
+        System.out.println("Vehicle Number : " + vehicleNumber);
+        System.out.println("Owner Name     : " + ownerName);
+        System.out.println("Vehicle Type   : " + vehicleType);
+        System.out.println("----------------------------");
+    }
+}
+
+public class Main {
+
+    static ArrayList<Vehicle> parkedVehicles = new ArrayList<>();
+    static Scanner sc = new Scanner(System.in);
+    static int totalSlots = 20;
+
+    static void parkVehicle() {
+        if (parkedVehicles.size() >= totalSlots) {
+            System.out.println("Parking Full!");
+            return;
+        }
+
+        sc.nextLine();
+
+        System.out.print("Enter Vehicle Number: ");
+        String number = sc.nextLine();
+
+        System.out.print("Enter Owner Name: ");
+        String owner = sc.nextLine();
+
+        System.out.print("Enter Vehicle Type (Car/Bike): ");
+        String type = sc.nextLine();
+
+        parkedVehicles.add(new Vehicle(number, owner, type));
+        System.out.println("Vehicle Parked Successfully!");
+    }
+
+    static void removeVehicle() {
+        sc.nextLine();
+
+        System.out.print("Enter Vehicle Number: ");
+        String number = sc.nextLine();
+
+        for (int i = 0; i < parkedVehicles.size(); i++) {
+            if (parkedVehicles.get(i).vehicleNumber.equalsIgnoreCase(number)) {
+                parkedVehicles.remove(i);
+                System.out.println("Vehicle Removed Successfully!");
+                return;
+            }
+        }
+
+        System.out.println("Vehicle Not Found!");
+    }
+
+    static void searchVehicle() {
+        sc.nextLine();
+
+        System.out.print("Enter Vehicle Number: ");
+        String number = sc.nextLine();
+
+        for (Vehicle v : parkedVehicles) {
+            if (v.vehicleNumber.equalsIgnoreCase(number)) {
+                v.display();
+                return;
+            }
+        }
+
+        System.out.println("Vehicle Not Found!");
+    }
+
+    static void viewAllVehicles() {
+        if (parkedVehicles.isEmpty()) {
+            System.out.println("No Vehicles Parked!");
+            return;
+        }
+
+        for (Vehicle v : parkedVehicles) {
+            v.display();
+        }
+    }
+
+    static void showAvailableSlots() {
+        System.out.println("Total Slots     : " + totalSlots);
+        System.out.println("Occupied Slots  : " + parkedVehicles.size());
+        System.out.println("Available Slots : " +
+                (totalSlots - parkedVehicles.size()));
+    }
+
+    public static void main(String[] args) {
+
+        while (true) {
+            System.out.println("\n===== Parking Management System =====");
+            System.out.println("1. Park Vehicle");
+            System.out.println("2. Remove Vehicle");
+            System.out.println("3. Search Vehicle");
+            System.out.println("4. View All Vehicles");
+            System.out.println("5. Available Slots");
+            System.out.println("6. Exit");
+
+            System.out.print("Enter Your Choice: ");
+            int choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    parkVehicle();
+                    break;
+                case 2:
+                    removeVehicle();
+                    break;
+                case 3:
+                    searchVehicle();
+                    break;
+                case 4:
+                    viewAllVehicles();
+                    break;
+                case 5:
+                    showAvailableSlots();
+                    break;
+                case 6:
+                    System.out.println("Thank You!");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid Choice!");
+            }
+        }
+    }
+}
