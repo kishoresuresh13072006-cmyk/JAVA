@@ -1,0 +1,151 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Consumer {
+    int consumerId;
+    String consumerName;
+    int unitsConsumed;
+    double billAmount;
+
+    Consumer(int consumerId, String consumerName, int unitsConsumed) {
+        this.consumerId = consumerId;
+        this.consumerName = consumerName;
+        this.unitsConsumed = unitsConsumed;
+        this.billAmount = calculateBill();
+    }
+
+    double calculateBill() {
+        if (unitsConsumed <= 100)
+            return unitsConsumed * 1.5;
+        else if (unitsConsumed <= 300)
+            return (100 * 1.5) + ((unitsConsumed - 100) * 2.5);
+        else
+            return (100 * 1.5) + (200 * 2.5) + ((unitsConsumed - 300) * 4);
+    }
+
+    void display() {
+        System.out.println("\nConsumer ID   : " + consumerId);
+        System.out.println("Consumer Name : " + consumerName);
+        System.out.println("Units Used    : " + unitsConsumed);
+        System.out.println("Bill Amount   : ₹" + billAmount);
+        System.out.println("-----------------------------");
+    }
+}
+
+public class Main {
+
+    static ArrayList<Consumer> consumers = new ArrayList<>();
+    static Scanner sc = new Scanner(System.in);
+
+    static void addConsumer() {
+        System.out.print("Enter Consumer ID: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter Consumer Name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Enter Units Consumed: ");
+        int units = sc.nextInt();
+
+        consumers.add(new Consumer(id, name, units));
+        System.out.println("Consumer Added Successfully!");
+    }
+
+    static void viewConsumers() {
+        if (consumers.isEmpty()) {
+            System.out.println("No Consumer Records Found!");
+            return;
+        }
+
+        for (Consumer c : consumers) {
+            c.display();
+        }
+    }
+
+    static void searchConsumer() {
+        System.out.print("Enter Consumer ID: ");
+        int id = sc.nextInt();
+
+        for (Consumer c : consumers) {
+            if (c.consumerId == id) {
+                c.display();
+                return;
+            }
+        }
+
+        System.out.println("Consumer Not Found!");
+    }
+
+    static void updateUnits() {
+        System.out.print("Enter Consumer ID: ");
+        int id = sc.nextInt();
+
+        for (Consumer c : consumers) {
+            if (c.consumerId == id) {
+                System.out.print("Enter New Units Consumed: ");
+                c.unitsConsumed = sc.nextInt();
+                c.billAmount = c.calculateBill();
+
+                System.out.println("Units Updated Successfully!");
+                return;
+            }
+        }
+
+        System.out.println("Consumer Not Found!");
+    }
+
+    static void deleteConsumer() {
+        System.out.print("Enter Consumer ID: ");
+        int id = sc.nextInt();
+
+        for (int i = 0; i < consumers.size(); i++) {
+            if (consumers.get(i).consumerId == id) {
+                consumers.remove(i);
+                System.out.println("Consumer Deleted Successfully!");
+                return;
+            }
+        }
+
+        System.out.println("Consumer Not Found!");
+    }
+
+    public static void main(String[] args) {
+
+        while (true) {
+            System.out.println("\n===== Electricity Bill Management System =====");
+            System.out.println("1. Add Consumer");
+            System.out.println("2. View All Consumers");
+            System.out.println("3. Search Consumer");
+            System.out.println("4. Update Units");
+            System.out.println("5. Delete Consumer");
+            System.out.println("6. Exit");
+
+            System.out.print("Enter Your Choice: ");
+            int choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    addConsumer();
+                    break;
+                case 2:
+                    viewConsumers();
+                    break;
+                case 3:
+                    searchConsumer();
+                    break;
+                case 4:
+                    updateUnits();
+                    break;
+                case 5:
+                    deleteConsumer();
+                    break;
+                case 6:
+                    System.out.println("Thank You!");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid Choice!");
+            }
+        }
+    }
+}
