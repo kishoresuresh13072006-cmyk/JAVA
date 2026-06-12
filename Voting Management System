@@ -1,0 +1,140 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Candidate {
+    int id;
+    String name;
+    int votes;
+
+    Candidate(int id, String name) {
+        this.id = id;
+        this.name = name;
+        this.votes = 0;
+    }
+
+    void display() {
+        System.out.println("Candidate ID : " + id);
+        System.out.println("Name         : " + name);
+        System.out.println("Votes        : " + votes);
+        System.out.println("------------------------");
+    }
+}
+
+public class Main {
+
+    static ArrayList<Candidate> candidates = new ArrayList<>();
+    static Scanner sc = new Scanner(System.in);
+
+    static void addCandidate() {
+        System.out.print("Enter Candidate ID: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter Candidate Name: ");
+        String name = sc.nextLine();
+
+        candidates.add(new Candidate(id, name));
+        System.out.println("Candidate Added Successfully!");
+    }
+
+    static void viewCandidates() {
+        if (candidates.isEmpty()) {
+            System.out.println("No Candidates Available!");
+            return;
+        }
+
+        for (Candidate c : candidates) {
+            c.display();
+        }
+    }
+
+    static void castVote() {
+        System.out.print("Enter Candidate ID to Vote: ");
+        int id = sc.nextInt();
+
+        for (Candidate c : candidates) {
+            if (c.id == id) {
+                c.votes++;
+                System.out.println("Vote Cast Successfully!");
+                return;
+            }
+        }
+
+        System.out.println("Candidate Not Found!");
+    }
+
+    static void showResults() {
+        if (candidates.isEmpty()) {
+            System.out.println("No Candidates Available!");
+            return;
+        }
+
+        Candidate winner = candidates.get(0);
+
+        System.out.println("\n===== VOTING RESULTS =====");
+
+        for (Candidate c : candidates) {
+            System.out.println(c.name + " : " + c.votes + " votes");
+
+            if (c.votes > winner.votes) {
+                winner = c;
+            }
+        }
+
+        System.out.println("\nWinner: " + winner.name);
+        System.out.println("Total Votes: " + winner.votes);
+    }
+
+    static void searchCandidate() {
+        System.out.print("Enter Candidate ID: ");
+        int id = sc.nextInt();
+
+        for (Candidate c : candidates) {
+            if (c.id == id) {
+                c.display();
+                return;
+            }
+        }
+
+        System.out.println("Candidate Not Found!");
+    }
+
+    public static void main(String[] args) {
+
+        while (true) {
+            System.out.println("\n===== Voting Management System =====");
+            System.out.println("1. Add Candidate");
+            System.out.println("2. View Candidates");
+            System.out.println("3. Cast Vote");
+            System.out.println("4. Search Candidate");
+            System.out.println("5. Show Results");
+            System.out.println("6. Exit");
+
+            System.out.print("Enter Choice: ");
+            int choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    addCandidate();
+                    break;
+                case 2:
+                    viewCandidates();
+                    break;
+                case 3:
+                    castVote();
+                    break;
+                case 4:
+                    searchCandidate();
+                    break;
+                case 5:
+                    showResults();
+                    break;
+                case 6:
+                    System.out.println("Thank You!");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid Choice!");
+            }
+        }
+    }
+}
