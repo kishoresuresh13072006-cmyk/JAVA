@@ -1,0 +1,97 @@
+import java.util.*;
+
+class FoodItem {
+    int id;
+    String name;
+    double price;
+
+    FoodItem(int id, String name, double price) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+    }
+}
+
+public class Main {
+    static ArrayList<FoodItem> menu = new ArrayList<>();
+    static Scanner sc = new Scanner(System.in);
+
+    static void initializeMenu() {
+        menu.add(new FoodItem(1, "Burger", 120));
+        menu.add(new FoodItem(2, "Pizza", 250));
+        menu.add(new FoodItem(3, "Sandwich", 100));
+        menu.add(new FoodItem(4, "Pasta", 180));
+        menu.add(new FoodItem(5, "French Fries", 90));
+    }
+
+    static void displayMenu() {
+        System.out.println("\n===== FOOD MENU =====");
+        System.out.printf("%-5s %-20s %-10s\n", "ID", "Item", "Price");
+        for (FoodItem item : menu) {
+            System.out.printf("%-5d %-20s ₹%-10.2f\n",
+                    item.id, item.name, item.price);
+        }
+    }
+
+    public static void main(String[] args) {
+        initializeMenu();
+
+        ArrayList<String> orderedItems = new ArrayList<>();
+        double totalBill = 0;
+
+        while (true) {
+            displayMenu();
+
+            System.out.print("\nEnter Food ID to Order (0 to Finish): ");
+            int choice = sc.nextInt();
+
+            if (choice == 0)
+                break;
+
+            boolean found = false;
+
+            for (FoodItem item : menu) {
+                if (item.id == choice) {
+                    System.out.print("Enter Quantity: ");
+                    int qty = sc.nextInt();
+
+                    double cost = item.price * qty;
+                    totalBill += cost;
+
+                    orderedItems.add(
+                        item.name + " x " + qty + " = ₹" + cost
+                    );
+
+                    System.out.println("Item Added Successfully!");
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                System.out.println("Invalid Food ID!");
+            }
+        }
+
+        System.out.println("\n===== ORDER SUMMARY =====");
+
+        if (orderedItems.isEmpty()) {
+            System.out.println("No Items Ordered.");
+        } else {
+            for (String order : orderedItems) {
+                System.out.println(order);
+            }
+
+            System.out.println("--------------------------");
+            System.out.println("Total Bill: ₹" + totalBill);
+
+            double gst = totalBill * 0.05;
+            double finalAmount = totalBill + gst;
+
+            System.out.println("GST (5%): ₹" + gst);
+            System.out.println("Final Amount: ₹" + finalAmount);
+        }
+
+        System.out.println("\nThank You For Ordering!");
+    }
+}
