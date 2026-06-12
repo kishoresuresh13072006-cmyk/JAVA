@@ -1,0 +1,45 @@
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        String[] requiredSkills = {
+            "java",
+            "python",
+            "sql",
+            "html",
+            "communication"
+        };
+
+        System.out.println("=== AI Resume Screening System ===");
+
+        System.out.println("Paste Resume Text:");
+        sc.nextLine();
+        String resume = sc.nextLine().toLowerCase();
+
+        int score = 0;
+
+        System.out.println("\nMatched Skills:");
+
+        for (String skill : requiredSkills) {
+            if (resume.contains(skill)) {
+                System.out.println(skill);
+                score++;
+            }
+        }
+
+        double percentage =
+                (double) score / requiredSkills.length * 100;
+
+        System.out.println("\nResume Score: " + percentage + "%");
+
+        if (percentage >= 60) {
+            System.out.println("Status: SHORTLISTED");
+        } else {
+            System.out.println("Status: REJECTED");
+        }
+    }
+}
