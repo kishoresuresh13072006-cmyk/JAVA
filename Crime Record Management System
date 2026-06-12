@@ -1,0 +1,144 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class CrimeRecord {
+    int caseId;
+    String criminalName;
+    String crimeType;
+    String status;
+
+    CrimeRecord(int caseId, String criminalName, String crimeType, String status) {
+        this.caseId = caseId;
+        this.criminalName = criminalName;
+        this.crimeType = crimeType;
+        this.status = status;
+    }
+
+    void display() {
+        System.out.println("\nCase ID       : " + caseId);
+        System.out.println("Criminal Name : " + criminalName);
+        System.out.println("Crime Type    : " + crimeType);
+        System.out.println("Case Status   : " + status);
+        System.out.println("--------------------------------");
+    }
+}
+
+public class Main {
+
+    static ArrayList<CrimeRecord> records = new ArrayList<>();
+    static Scanner sc = new Scanner(System.in);
+
+    static void addRecord() {
+        System.out.print("Enter Case ID: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter Criminal Name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Enter Crime Type: ");
+        String crime = sc.nextLine();
+
+        System.out.print("Enter Case Status (Open/Closed): ");
+        String status = sc.nextLine();
+
+        records.add(new CrimeRecord(id, name, crime, status));
+        System.out.println("Crime Record Added Successfully!");
+    }
+
+    static void viewRecords() {
+        if (records.isEmpty()) {
+            System.out.println("No Crime Records Available!");
+            return;
+        }
+
+        for (CrimeRecord r : records) {
+            r.display();
+        }
+    }
+
+    static void searchRecord() {
+        System.out.print("Enter Case ID: ");
+        int id = sc.nextInt();
+
+        for (CrimeRecord r : records) {
+            if (r.caseId == id) {
+                r.display();
+                return;
+            }
+        }
+
+        System.out.println("Record Not Found!");
+    }
+
+    static void updateStatus() {
+        System.out.print("Enter Case ID: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        for (CrimeRecord r : records) {
+            if (r.caseId == id) {
+                System.out.print("Enter New Status: ");
+                r.status = sc.nextLine();
+                System.out.println("Status Updated Successfully!");
+                return;
+            }
+        }
+
+        System.out.println("Record Not Found!");
+    }
+
+    static void deleteRecord() {
+        System.out.print("Enter Case ID: ");
+        int id = sc.nextInt();
+
+        for (int i = 0; i < records.size(); i++) {
+            if (records.get(i).caseId == id) {
+                records.remove(i);
+                System.out.println("Record Deleted Successfully!");
+                return;
+            }
+        }
+
+        System.out.println("Record Not Found!");
+    }
+
+    public static void main(String[] args) {
+
+        while (true) {
+            System.out.println("\n===== Crime Record Management System =====");
+            System.out.println("1. Add Crime Record");
+            System.out.println("2. View All Records");
+            System.out.println("3. Search Record");
+            System.out.println("4. Update Case Status");
+            System.out.println("5. Delete Record");
+            System.out.println("6. Exit");
+
+            System.out.print("Enter Choice: ");
+            int choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    addRecord();
+                    break;
+                case 2:
+                    viewRecords();
+                    break;
+                case 3:
+                    searchRecord();
+                    break;
+                case 4:
+                    updateStatus();
+                    break;
+                case 5:
+                    deleteRecord();
+                    break;
+                case 6:
+                    System.out.println("Thank You!");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid Choice!");
+            }
+        }
+    }
+}
