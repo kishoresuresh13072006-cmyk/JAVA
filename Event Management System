@@ -1,0 +1,162 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Event {
+    int eventId;
+    String eventName;
+    String eventDate;
+    int totalSeats;
+    int registeredParticipants;
+
+    Event(int eventId, String eventName, String eventDate, int totalSeats) {
+        this.eventId = eventId;
+        this.eventName = eventName;
+        this.eventDate = eventDate;
+        this.totalSeats = totalSeats;
+        this.registeredParticipants = 0;
+    }
+
+    void display() {
+        System.out.println("\nEvent ID       : " + eventId);
+        System.out.println("Event Name     : " + eventName);
+        System.out.println("Event Date     : " + eventDate);
+        System.out.println("Total Seats    : " + totalSeats);
+        System.out.println("Registered     : " + registeredParticipants);
+        System.out.println("Available Seats: " + (totalSeats - registeredParticipants));
+        System.out.println("--------------------------------");
+    }
+}
+
+public class Main {
+
+    static ArrayList<Event> events = new ArrayList<>();
+    static Scanner sc = new Scanner(System.in);
+
+    static void addEvent() {
+        System.out.print("Enter Event ID: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter Event Name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Enter Event Date: ");
+        String date = sc.nextLine();
+
+        System.out.print("Enter Total Seats: ");
+        int seats = sc.nextInt();
+
+        events.add(new Event(id, name, date, seats));
+        System.out.println("Event Added Successfully!");
+    }
+
+    static void viewEvents() {
+        if (events.isEmpty()) {
+            System.out.println("No Events Available!");
+            return;
+        }
+
+        for (Event e : events) {
+            e.display();
+        }
+    }
+
+    static Event findEvent(int id) {
+        for (Event e : events) {
+            if (e.eventId == id) {
+                return e;
+            }
+        }
+        return null;
+    }
+
+    static void registerParticipant() {
+        System.out.print("Enter Event ID: ");
+        int id = sc.nextInt();
+
+        Event e = findEvent(id);
+
+        if (e != null) {
+            if (e.registeredParticipants < e.totalSeats) {
+                e.registeredParticipants++;
+                System.out.println("Participant Registered Successfully!");
+            } else {
+                System.out.println("No Seats Available!");
+            }
+        } else {
+            System.out.println("Event Not Found!");
+        }
+    }
+
+    static void cancelRegistration() {
+        System.out.print("Enter Event ID: ");
+        int id = sc.nextInt();
+
+        Event e = findEvent(id);
+
+        if (e != null) {
+            if (e.registeredParticipants > 0) {
+                e.registeredParticipants--;
+                System.out.println("Registration Cancelled!");
+            } else {
+                System.out.println("No Registrations Found!");
+            }
+        } else {
+            System.out.println("Event Not Found!");
+        }
+    }
+
+    static void deleteEvent() {
+        System.out.print("Enter Event ID: ");
+        int id = sc.nextInt();
+
+        for (int i = 0; i < events.size(); i++) {
+            if (events.get(i).eventId == id) {
+                events.remove(i);
+                System.out.println("Event Deleted Successfully!");
+                return;
+            }
+        }
+
+        System.out.println("Event Not Found!");
+    }
+
+    public static void main(String[] args) {
+
+        while (true) {
+            System.out.println("\n===== Event Management System =====");
+            System.out.println("1. Add Event");
+            System.out.println("2. View Events");
+            System.out.println("3. Register Participant");
+            System.out.println("4. Cancel Registration");
+            System.out.println("5. Delete Event");
+            System.out.println("6. Exit");
+
+            System.out.print("Enter Your Choice: ");
+            int choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    addEvent();
+                    break;
+                case 2:
+                    viewEvents();
+                    break;
+                case 3:
+                    registerParticipant();
+                    break;
+                case 4:
+                    cancelRegistration();
+                    break;
+                case 5:
+                    deleteEvent();
+                    break;
+                case 6:
+                    System.out.println("Thank You!");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid Choice!");
+            }
+        }
+    }
+}
